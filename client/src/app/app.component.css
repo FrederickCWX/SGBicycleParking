@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+*{
+  font-family: 'Quicksand', sans-serif;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+}
+body{
+    
+  background: url('../assets/images/BPBg.gif') 100% 100% fixed;
+  
+  /*
+  background-color: black;
+  */
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100%;
+  width:100%;
+  min-height: 100vh;
+}
