@@ -5,7 +5,7 @@ public class Queries {
   //Table - user_details
   public static final String SQL_INSERT_USER_DETAILS = "insert ignore into user_details(name, password, email) values(?, sha1(?), ?)";
 
-  //public static final String SQL_UPDATE_USER_FROM_USER_DETAILS = "insert ignore into user(user_details_id) select user_details_id from user_details;";
+  public static final String SQL_CHECK_EMAIL = "select * from user_details where email=?";
 
   public static final String SQL_CHECK_USER_DETAILS = "select * from user_details where email=? and password=sha1(?)";
 

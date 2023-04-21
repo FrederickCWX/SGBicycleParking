@@ -38,6 +38,15 @@ public class UserParkingRepository {
       return null;
   }
 
+  public UserDetails checkEmail(String email) throws Exception {
+    SqlRowSet response = jdbcTemplate.queryForRowSet(SQL_CHECK_EMAIL, email);
+
+    if(response.next())
+      return UserDetails.create(response);
+    else
+      return null;
+  }
+
   public List<Favourites> getUserFavourites(String email) throws Exception {
     final SqlRowSet response = jdbcTemplate.queryForRowSet(SQL_GET_FAVOURITES_ID_BY_USER_ID, email);
 

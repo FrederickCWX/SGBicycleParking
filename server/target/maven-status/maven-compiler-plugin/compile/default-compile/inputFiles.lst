@@ -20,6 +20,7 @@
 /Users/zafian/Desktop/SGBicycleParking/server/src/main/java/com/vttp2022/BicycleParkingApp/models/mysql/Coord.java
 /Users/zafian/Desktop/SGBicycleParking/server/src/main/java/com/vttp2022/BicycleParkingApp/models/mysql/UserParking.java
 /Users/zafian/Desktop/SGBicycleParking/server/src/main/java/com/vttp2022/BicycleParkingApp/models/ErrorResponse.java
+/Users/zafian/Desktop/SGBicycleParking/server/src/main/java/com/vttp2022/BicycleParkingApp/services/BookingsAPIService.java
 /Users/zafian/Desktop/SGBicycleParking/server/src/main/java/com/vttp2022/BicycleParkingApp/utilities/SortByDistance.java
 /Users/zafian/Desktop/SGBicycleParking/server/src/main/java/com/vttp2022/BicycleParkingApp/BicycleParkingAppApplication.java
 /Users/zafian/Desktop/SGBicycleParking/server/src/main/java/com/vttp2022/BicycleParkingApp/controller/AngularController.java

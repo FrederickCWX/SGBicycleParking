@@ -1,25 +1,31 @@
 package com.vttp2022.BicycleParkingApp.services;
 
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import com.vttp2022.BicycleParkingApp.models.mysql.Bookings;
 import com.vttp2022.BicycleParkingApp.models.parking.Parkings;
 import com.vttp2022.BicycleParkingApp.models.parking.Query;
 import com.vttp2022.BicycleParkingApp.models.parking.Value;
 import com.vttp2022.BicycleParkingApp.models.postal.Postal;
 import com.vttp2022.BicycleParkingApp.models.postal.Results;
-import com.vttp2022.BicycleParkingApp.repositories.UserParkingRepository;
 import com.vttp2022.BicycleParkingApp.utilities.SortByDistance;
+
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 @Service
 public class TelegramBot extends TelegramLongPollingBot {
@@ -32,8 +38,21 @@ public class TelegramBot extends TelegramLongPollingBot {
         
         String command = update.getMessage().getText();
 
+        if(command.equals("/start")) {
+            String message = "Welcome to SG Bicycle Parking Telegram Bot. \n\nEnter a postal code to search for the nearest bicycle parking bays (in increments of 50metres) of the postal code!\n\nOR\n\nEnter your email address to view your current bookings!";
+
+            SendMessage response = new SendMessage();
+            response.setChatId(update.getMessage().getChatId().toString());
+            response.setText(message);
+            try {
+                execute(response);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
+
         if(command.equals("/help")) {
-            String message = "Enter a postal code to search for the nearest bicycle parking bays (in increments of 50metres) of the postal code!";
+            String message = "Enter a postal code to search for the nearest bicycle parking bays (in increments of 50metres) of the postal code!\n\nOR\n\nEnter your email address to view your current bookings!";
             SendMessage response = new SendMessage();
             response.setChatId(update.getMessage().getChatId().toString());
             response.setText(message);
@@ -55,6 +74,20 @@ public class TelegramBot extends TelegramLongPollingBot {
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
+        }
+
+        if(command.contains("@")) {
+            String message = searchBookings(command);
+
+            SendMessage response = new SendMessage();
+            response.setChatId(update.getMessage().getChatId().toString());
+            response.setText(message);
+            try {
+                execute(response);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -99,12 +132,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             while(true){
                 q.setRadius(km);
                 Optional<Parkings> optParking = ParkingAPIService.findParking(q);
-                // logger.info("Optional Parking - "+optParking.toString());
-                // if(optParking.isEmpty()) {
-                //     message = "There are no bicycle parking bays located within 150m of Singapore "+postal;
-                //     break;
-                // }
-
                 Collections.sort(Parkings.getValue(), new SortByDistance());
                 val = Parkings.getValue();
                 if(val.size()>0) break;
@@ -131,6 +158,48 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
             message = sb.toString();
             break;
+        }
+        return message;
+    }
+
+    public String searchBookings(String email){
+        String message = "";
+        String response = BookingsAPIService.getBookings(email);
+        if(response.equals("Invalid email")) return response;
+
+        try {
+            List<Bookings> bList = new ArrayList<>();
+
+            JsonReader jr = Json.createReader(new StringReader(response));
+            JsonArray ja = jr.readArray();
+
+            if(ja != null) {
+                for(Object jv: ja){
+                    JsonObject jo = (JsonObject) jv;
+                    bList.add(Bookings.createTeleJson(jo));
+                }
+            }else return "You have no bookings";
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("You have ");
+            sb.append(bList.size());
+            sb.append(" bicycle parking bay booking(s):");
+            for(Bookings b: bList) {
+                sb.append("\n\nDate: ");
+                sb.append(b.getBookingDate());
+                sb.append("\nDescription: ");
+                sb.append(b.getDescription());
+                sb.append("\nRack Type: ");
+                sb.append(b.getRackType());
+                sb.append("\nRack Count: ");
+                sb.append(b.getRackCount());
+                sb.append("\nSheltered Bay: ");
+                sb.append(b.getSheltered());
+            }
+            message = sb.toString();
+        } catch(Exception e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return message;
     }

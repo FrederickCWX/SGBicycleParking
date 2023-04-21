@@ -7,6 +7,7 @@ import java.io.InputStream;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonNumber;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
@@ -85,6 +86,27 @@ public class Bookings {
       b.sheltered = jsShelter.getString();
 
     }
+    return b;
+  }
+
+  public static Bookings createTeleJson(JsonObject jo) throws IOException {
+    Bookings b = new Bookings();
+
+      JsonString jsEmail = jo.getJsonString("email");
+      b.email = jsEmail.getString();
+      JsonString jsDate = jo.getJsonString("bookingDate");
+      b.bookingDate = jsDate.getString();
+      JsonString jsImg = jo.getJsonString("image");
+      b.image = jsImg.getString();
+      JsonString jsDesp = jo.getJsonString("description");
+      b.description = jsDesp.getString();
+      JsonString jsType = jo.getJsonString("rackType");
+      b.rackType = jsType.getString();
+      JsonNumber jnCount = jo.getJsonNumber("rackCount");
+      b.rackCount = jnCount.intValue();
+      JsonString jsShelter = jo.getJsonString("sheltered");
+      b.sheltered = jsShelter.getString();
+    
     return b;
   }
 

@@ -94,6 +94,23 @@ public class AngularController {
     }
   }
 
+  //Telegram Bot
+  @GetMapping(path="/email")
+  public ResponseEntity<?> checkEmail(@RequestHeader(value = "email", required = true) String email) throws Exception {
+    logger.info("Controller check email >>> "+email);
+    UserDetails ud = new UserDetails();
+    ud = upRepo.checkEmail(email);
+
+    if(ud == null){
+      logger.info("Controller response is null");
+      return ResponseEntity.ok("{\"status\":\"Invalid email\"}");
+    }
+
+    logger.info("Controller response name >>> "+ud.getName());
+
+    return ResponseEntity.ok("{\"status\":\"Valid email\"}");
+  }
+
   //Favourites
   @GetMapping(path="/favourites") 
   public ResponseEntity<?> getFavourites(@RequestParam(value = "email", required = true) String email) throws Exception {
