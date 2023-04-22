@@ -67,7 +67,6 @@ export class ResultComponent implements OnInit{
       })
       .catch(error => {
         if (error instanceof HttpErrorResponse) {
-          console.info('HTTP Error Response')
           const constErrorMessage = typeof error.error === 'string' ? error.error : error.error.message;
           console.error('>>> error: ', error)
           if(String(constErrorMessage) === 'Invalid booking date' || 

@@ -40,48 +40,6 @@
           required style="min-width: 450px;">
           <button type="submit" class="btn btn-secondary fs-4" style="width: 100px;">Search</button>
         </form>
-
-
-
-
-        <!--
-        <form 
-        class="row justify-content-center" 
-        method="GET" 
-        action="#"
-        th:action="@{/result}"
-        >
-          <select 
-          class="form-select fs-4" 
-          th:object="${parkings}" 
-          name="Dist"
-          id="Dist"
-          style="width: 10vw; min-width: 125px;"
-          >
-            <option selected value="0.25">Radius</option>
-            <option value="0.1">100m</option>
-            <option value="0.2">200m</option>
-            <option value="0.25">250m</option>
-            <option value="0.3">300m</option>
-            <option value="0.4">400m</option>
-            <option value="0.5">500m</option>
-          </select>
-          <input 
-          th:object="${postal}"
-          class="form-control form-control-lg fs-4 w-25" 
-          type="text"
-          name="PostalCode"
-          id="PostalCode"
-          placeholder="Enter postal code" 
-          aria-label=".form-control-lg search"
-          oninvalid="this.setCustomValidity('Please enter a postal code')"
-          oninput="setCustomValidity('')"
-          required style="min-width: 450px;">
-          <button type="submit" class="btn btn-secondary fs-4" style="width: 100px;">Search</button>
-        </form>
-      -->
-
-
       </div>
     </div>
   </div>

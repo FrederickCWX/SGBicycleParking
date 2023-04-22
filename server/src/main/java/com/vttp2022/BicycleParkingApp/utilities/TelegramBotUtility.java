@@ -11,7 +11,6 @@ public class TelegramBotUtility {
   private static final Logger logger = LoggerFactory.getLogger(TelegramBotUtility.class);
 
   public boolean checkEmailExist(String email) {
-    //TODO - check if email exist from database
     boolean emailFound = false;
 
     logger.info(email+" found >>> "+emailFound);

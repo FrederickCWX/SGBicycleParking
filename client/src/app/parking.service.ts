@@ -37,7 +37,6 @@ export class ParkingService {
       this.router.navigate(['/search'])
       return result
     })
-    //return Promise.reject('Registration failed - Passwords do not match');
   }
 
   //Search | Results

@@ -68,49 +68,6 @@
               </div>
             </div>
           </div>
-
-
-          <!--
-          <div class="row pt-auto" th:each="detail : *{details}" style="margin-top: 30px;">
-            <div class="col-md-6">
-              <img th:src= "${detail.img}" class="img-fluid rounded" style="height: 350px; width: 500px">
-            </div>
-            <div class="col-md-6 d-flex align-items-center" style="border-radius: 20px; background-color: rgba(248, 249, 250, 0.8); width: auto; min-width: 600px; max-width: 45vw;">
-              <div class="card-body px-0">
-                <table class="table table-responsive table-borderless my-0 mx-auto fs-5 text-start" style="width: auto; height: auto;">
-                  <tbody>
-                    <tr>
-                      <th class="col-md-3">Description: </th>
-                      <td><span th:text="${detail.description}"></span></td>
-                    </tr>
-                    <tr>
-                      <th class="col-md-3">Rack Type: </th>
-                      <td><span th:text="${detail.rackType}"></span></td>
-                    </tr>
-                    <tr>
-                      <th class="col-md-3">Rack Count: </th>
-                      <td><span th:text="${detail.rackCount}"></span></td>
-                    </tr>
-                    <tr>
-                      <th class="col-md-3">Sheltered bay: </th>
-                      <td><span th:text="${detail.shelter}"></span></td>
-                    </tr>
-                    <tr>
-                      <td class="col-md-3" colspan="2">
-                        <form method="POST" action="/removeParking">
-                          <input type="hidden" name="id" data-th-value="${detail.id}">
-                          <button type="submit" class="btn btn-secondary fs-5">Remove from favourite</button>
-                        </form>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        -->
-
-          
         </div>
       </div>
     </div>

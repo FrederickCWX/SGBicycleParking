@@ -12,7 +12,6 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent},
   { path: 'search', component: SearchComponent },
   { path: 'result', component: ResultComponent},
-  //{ path: 'result', component: ResultComponent, pathMatch: 'prefix'},
   { path: 'favourites', component: FavouritesComponent },
   { path: 'bookings', component: BookingsComponent},
   { path: '**', redirectTo: 'search', pathMatch: 'full' }
