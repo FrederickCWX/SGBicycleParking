@@ -32,11 +32,17 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private static final Logger logger = LoggerFactory.getLogger(TelegramBot.class);
 
+    private int onceOnly = 0;
+
     @Override
     public void onUpdateReceived(Update update) {
         logger.info(String.format("(Telegram Bot) Message from %s >>> %s",update.getMessage().getFrom().getFirstName(),update.getMessage().getText()));
+
+        String username = update.getMessage().getFrom().getFirstName();
         
         String command = update.getMessage().getText().toLowerCase();
+
+        //int onceOnly = 0;
 
         if(command.equals("/start")) {
             String message = "Welcome to SG Bicycle Parking Telegram Bot. \n\nEnter a postal code to search for the nearest bicycle parking bays (in increments of 50metres) of the postal code using the following command format 'search <Postal Code>'\n\nOR\n\nEnter your email address to view your current bookings using the following command format 'booking <Email>'";
@@ -44,7 +50,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             sendMessage(message, update);
             
         }else if(command.equals("/help")) {
-            String message = "Search for the nearest bicycle parking bays:\nseach <Postal Code>\n\nOR\n\nView your current bookings:\nbooking <Email>";
+            String message = "Search for the nearest bicycle parking bays:\nsearch <Postal Code>\n\nOR\n\nView your current bookings:\nbooking <Email>";
 
             sendMessage(message, update);
 
