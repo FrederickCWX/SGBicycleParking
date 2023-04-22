@@ -41,12 +41,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         String command = update.getMessage().getText().toLowerCase();
 
         if(command.equals("/start")) {
-            String message = "Welcome to SG Bicycle Parking Telegram Bot. \n\nEnter a postal code to search for the nearest bicycle parking bays (in increments of 50metres) of the postal code using the following command format:\nsearch <Postal Code>\n\nOR\n\nEnter your email address to view your current bookings using the following command format:\nbooking <Email>";
+            String message = "Welcome to SG Bicycle Parking Telegram Bot. \n\nEnter a postal code to search for the nearest bicycle parking bays (in increments of 50metres) of the postal code using the following command format:\nsearch<space>*Postal Code*\n\nOR\n\nEnter your email address to view your current bookings using the following command format:\nbooking<space>*Email*";
 
             sendMessage(message, update);
             
         }else if(command.equals("/help")) {
-            String message = "Search for the nearest bicycle parking bays:\nsearch <Postal Code>\n\nOR\n\nView your current bookings:\nbooking <Email>";
+            String message = "Search for the nearest bicycle parking bays:\nsearch<space>*Postal Code*\n\nOR\n\nView your current bookings:\nbooking<space>*Email*";
 
             sendMessage(message, update);
 
@@ -54,12 +54,13 @@ public class TelegramBot extends TelegramLongPollingBot {
             String message = "";
             String postal = "";
             String[] split = command.split(" ");
-            if(split.length != 2) message = "Enter your search in the format of 'search <Postal Code>'";
+            if(split.length != 2) message = "Invalid search format, use /help to learn how to use SG Bicycle Parking Bot.";
             else postal = split[1];
             
-
-            if(isPostal(postal) == false) message = "Invalid postal, use '/help' to learn how to use SG Bicycle Parking Bot.";
-            else if(isPostal(postal) == true) message = searchBP(postal);
+            if(postal != "") {
+                if(isPostal(postal) == false) message = "Invalid postal, use /help to learn how to use SG Bicycle Parking Bot.";
+                else if(isPostal(postal) == true) message = searchBP(postal);
+            }
 
             sendMessage(message, update);
 
@@ -67,16 +68,19 @@ public class TelegramBot extends TelegramLongPollingBot {
             String message = "";
             String email = "";
             String[] split = command.split(" ");
-            if(split.length != 2) message = "Enter your booking search in the format of 'booking <Email>'";
+
+            if(split.length != 2) message = "Invalid booking format, use /help to learn how to use SG Bicycle Parking Bot.";
             else email = split[1];
 
-            if(!email.contains("@")) message = "Invalid email, use '/help' to learn how to use SG Bicycle Parking Bot.";
-            else message = searchBookings(email);
+            if(email != "") {
+                if(!email.contains("@")) message = "Invalid email, use /help to learn how to use SG Bicycle Parking Bot.";
+                else message = searchBookings(email);
+            }
 
             sendMessage(message, update);
 
         }else {
-            String message = "Invalid command, use '/help' to learn how to use SG Bicycle Parking Bot.";
+            String message = "Invalid reply, use /help to learn how to use SG Bicycle Parking Bot.";
 
             sendMessage(message, update);
         }
