@@ -34,7 +34,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        logger.info(String.format("(Telegram Bot) Message from %s >>> %s",update.getMessage().getFrom().getFirstName(),update.getMessage().getText()));
+        //logger.info(String.format("(Telegram Bot) Message from %s >>> %s",update.getMessage().getFrom().getFirstName(),update.getMessage().getText()));
 
         //String username = update.getMessage().getFrom().getFirstName();
         
@@ -58,7 +58,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             else postal = split[1];
             
             if(postal != "") {
-                if(isPostal(postal) == false) message = "Invalid postal, use /help to learn how to use SG Bicycle Parking Bot.";
+                if(isPostal(postal) == false) message = "Invalid postal code format. Postal code should be a 6 digit value. Use /help to learn how to use SG Bicycle Parking Bot.";
                 else if(isPostal(postal) == true) message = searchBP(postal);
             }
 
@@ -69,11 +69,11 @@ public class TelegramBot extends TelegramLongPollingBot {
             String email = "";
             String[] split = command.split(" ");
 
-            if(split.length != 2) message = "Invalid booking format, use /help to learn how to use SG Bicycle Parking Bot.";
+            if(split.length != 2) message = "Invalid booking request format, use /help to learn how to use SG Bicycle Parking Bot.";
             else email = split[1];
 
             if(email != "") {
-                if(!email.contains("@")) message = "Invalid email, use /help to learn how to use SG Bicycle Parking Bot.";
+                if(!email.contains("@")) message = "Invalid email format, use /help to learn how to use SG Bicycle Parking Bot.";
                 else message = searchBookings(email);
             }
 
@@ -107,13 +107,14 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public void sendMessage(String message, Update update) {
         SendMessage response = new SendMessage();
-            response.setChatId(update.getMessage().getChatId().toString());
-            response.setText(message);
-            try {
-                execute(response);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+        response.setChatId(update.getMessage().getChatId().toString());
+        response.setText(message);
+        try {
+            execute(response);
+        } catch (TelegramApiException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public String searchBP(String postal) {
@@ -125,8 +126,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             Optional<Postal> optPostal = PostalAPIService.getPostalDetails(Integer.valueOf(postal));
 
             if(Postal.getFound() == 0) {
-                message = "Please enter a valid postal code";
-                break;
+                return "Invalid postal code, use /help to learn how to use SG Bicycle Parking Bot.";
             }
             List<Value> val = new LinkedList<>();
 
@@ -171,7 +171,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public String searchBookings(String email){
         String message = "";
         String response = BookingsAPIService.getBookings(email);
-        if(response.equals("Invalid email")) return response;
+        if(response.equals("Invalid email")) return "Invalid email, use /help to learn how to use SG Bicycle Parking Bot.";
 
         try {
             List<Bookings> bList = new ArrayList<>();

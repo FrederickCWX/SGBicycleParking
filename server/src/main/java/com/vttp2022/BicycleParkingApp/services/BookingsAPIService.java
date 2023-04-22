@@ -49,7 +49,6 @@ public class BookingsAPIService {
       else {
         try {
             resp = template.exchange(bookingsUrl, HttpMethod.GET, null, String.class, 1);
-            //Bookings b = Bookings.createJson(resp.getBody());
             logger.info(resp.getBody());
             return resp.getBody();
           } catch (Exception e) {
