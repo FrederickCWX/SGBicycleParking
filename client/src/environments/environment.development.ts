@@ -11,6 +11,5 @@ export const environment = {
     measurementId: "G-6KGPWELEQM",
     vapidKey: "BDL6wM_K8FBDgNL-4Yqkr6UsgpTqFGBVnHWiPY9USUe4cGvQT8Fky7vdc0TIfNSOYaRSUvwAcKS1qnnQeL0l6Uo"
   },
-  //apiBaseUrl: 'https://sg-bicycle-parking.up.railway.app'
-  apiBaseUrl: 'http://localhost:8080',
+  apiBaseUrl: 'https://sg-bicycle-parking.up.railway.app'
 };
