@@ -26,6 +26,7 @@ public class BookingsAPIService {
 
   private static String BookingAPI = "https://sg-bicycle-parking.up.railway.app/api/bookings";
 
+
   public static String getBookings(String email) {
     String response = "";
     String userUrl = UriComponentsBuilder.fromUriString(UserAPI)

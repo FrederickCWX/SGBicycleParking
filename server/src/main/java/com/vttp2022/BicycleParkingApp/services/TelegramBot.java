@@ -36,58 +36,47 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         logger.info(String.format("(Telegram Bot) Message from %s >>> %s",update.getMessage().getFrom().getFirstName(),update.getMessage().getText()));
         
-        String command = update.getMessage().getText();
+        String command = update.getMessage().getText().toLowerCase();
 
         if(command.equals("/start")) {
-            String message = "Welcome to SG Bicycle Parking Telegram Bot. \n\nEnter a postal code to search for the nearest bicycle parking bays (in increments of 50metres) of the postal code!\n\nOR\n\nEnter your email address to view your current bookings!";
+            String message = "Welcome to SG Bicycle Parking Telegram Bot. \n\nEnter a postal code to search for the nearest bicycle parking bays (in increments of 50metres) of the postal code using the following command format 'search <Postal Code>'\n\nOR\n\nEnter your email address to view your current bookings using the following command format 'booking <Email>'";
 
-            SendMessage response = new SendMessage();
-            response.setChatId(update.getMessage().getChatId().toString());
-            response.setText(message);
-            try {
-                execute(response);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
+            sendMessage(message, update);
+            
+        }else if(command.equals("/help")) {
+            String message = "Search for the nearest bicycle parking bays:\nseach <Postal Code>\n\nOR\n\nView your current bookings:\nbooking <Email>";
 
-        if(command.equals("/help")) {
-            String message = "Enter a postal code to search for the nearest bicycle parking bays (in increments of 50metres) of the postal code!\n\nOR\n\nEnter your email address to view your current bookings!";
-            SendMessage response = new SendMessage();
-            response.setChatId(update.getMessage().getChatId().toString());
-            response.setText(message);
-            try {
-                execute(response);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
+            sendMessage(message, update);
 
-        if(isPostal(command) == true) {
-            String message = searchBP(command);
+        }else if(command.startsWith("search")) {
+            String message = "";
+            String postal = "";
+            String[] split = command.split(" ");
+            if(split.length != 2) message = "Enter your search in the format of 'search <Postal Code>'";
+            else postal = split[1];
+            
 
-            SendMessage response = new SendMessage();
-            response.setChatId(update.getMessage().getChatId().toString());
-            response.setText(message);
-            try {
-                execute(response);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
+            if(isPostal(postal) == false) message = "Invalid postal, use '/help' to learn how to use SG Bicycle Parking Bot.";
+            else if(isPostal(postal) == true) message = searchBP(postal);
 
-        if(command.contains("@")) {
-            String message = searchBookings(command);
+            sendMessage(message, update);
 
-            SendMessage response = new SendMessage();
-            response.setChatId(update.getMessage().getChatId().toString());
-            response.setText(message);
-            try {
-                execute(response);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+        }else if(command.startsWith("booking")) {
+            String message = "";
+            String email = "";
+            String[] split = command.split(" ");
+            if(split.length != 2) message = "Enter your booking search in the format of 'booking <Email>'";
+            else email = split[1];
 
+            if(!email.contains("@")) message = "Invalid email, use '/help' to learn how to use SG Bicycle Parking Bot.";
+            else message = searchBookings(email);
+
+            sendMessage(message, update);
+
+        }else {
+            String message = "Invalid command, use '/help' to learn how to use SG Bicycle Parking Bot.";
+
+            sendMessage(message, update);
         }
     }
 
@@ -108,6 +97,17 @@ public class TelegramBot extends TelegramLongPollingBot {
             if(!Character.isDigit(c)) return false;
         }
         return true;
+    }
+
+    public void sendMessage(String message, Update update) {
+        SendMessage response = new SendMessage();
+            response.setChatId(update.getMessage().getChatId().toString());
+            response.setText(message);
+            try {
+                execute(response);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
     }
 
     public String searchBP(String postal) {

@@ -7,7 +7,6 @@ import java.io.InputStream;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import jakarta.json.Json;
-import jakarta.json.JsonArray;
 import jakarta.json.JsonNumber;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;

@@ -29,7 +29,7 @@
             <div class="col-md-6">
               <img src= "{{ f.image }}" class="img-fluid rounded" style="height: 350px; width: 500px">
             </div>
-            <div class="col-md-6 d-flex align-items-center" style="border-radius: 20px; background-color: rgba(248, 249, 250, 0.8); width: auto; min-width: 600px; max-width: 45vw;">
+            <div class="col-md-6 d-flex align-items-center" style="border-radius: 20px; background-color: rgba(248, 249, 250, 0.8); width: auto; min-width: 600px; max-width: 800px; width: 40vw;">
               <div class="card-body px-0">
                 <form [formGroup]="bookingForm">
                   <table class="table table-responsive table-borderless my-0 mx-auto fs-5 text-start" style="width: auto; height: auto;">
@@ -52,7 +52,7 @@
                       </tr>
                       <tr class="mb-1">
                         <th class="col-md-5">Booking Date: </th>
-                        <td><input type="date" class="bg-transparent" formControlName="date"></td>
+                        <td><input type="date" class="bg-transparent form-control-sm fs-5" formControlName="date"></td>
                       </tr>
                       <tr>
                         <th class="col-md-5">
